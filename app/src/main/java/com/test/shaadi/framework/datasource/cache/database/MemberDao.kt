@@ -24,19 +24,13 @@ interface MemberDao {
     @Query(
         """
         UPDATE members 
-        SET 
-        name = :name, 
-        location = :location,
-        dob = :dob,
+        SET
         accepted = :is_accepted
         WHERE id = :primaryKey
         """
     )
     suspend fun updateMember(
         primaryKey: String,
-        name: String,
-        location: String?,
-        dob: String,
         is_accepted: Int
     ): Int
 

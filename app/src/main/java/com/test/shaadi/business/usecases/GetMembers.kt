@@ -8,8 +8,11 @@ import com.test.shaadi.business.data.util.safeApiCall
 import com.test.shaadi.business.data.util.safeCacheCall
 import com.test.shaadi.business.domain.model.MemberEach
 import com.test.shaadi.business.domain.model.Members
-import com.test.shaadi.business.domain.state.DataState
+import com.test.shaadi.business.domain.state.*
+import com.test.shaadi.framework.presentation.memberlist.state.MemberListViewState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,28 +30,71 @@ constructor(
         syncNetworkDataWithCache(networkNotesObject)
     }
 
-    private suspend fun getCachedMembers(): List<MemberEach> {
-        val cacheResult = safeCacheCall(Dispatchers.IO) {
-            membersCacheDataSource.getAllMembers()
+    fun getCachedMembers(stateEvent: StateEvent): Flow<DataState<MemberListViewState>?> =
+        flow {
+            val cacheResult = safeCacheCall(Dispatchers.IO) {
+                membersCacheDataSource.getAllMembers()
+            }
+
+            val response =
+                object : CacheResponseHandler<MemberListViewState, List<MemberEach>>(
+                    response = cacheResult,
+                    stateEvent = stateEvent
+                ) {
+                    override suspend fun handleSuccess(resultObj: List<MemberEach>): DataState<MemberListViewState>? {
+                        val viewState = MemberListViewState(
+                            memberList = resultObj
+                        )
+                        return DataState.data(
+                            response = Response(
+                                message = "Retrieved from local cache...",
+                                uiComponentType = UIComponentType.None(),
+                                messageType = MessageType.Success()
+                            ),
+                            data = viewState,
+                            stateEvent = stateEvent
+                        )
+                    }
+
+                }.getResult()
+
+            emit(response)
         }
 
-        val response =
-            object : CacheResponseHandler<List<MemberEach>, List<MemberEach>>(
-                response = cacheResult,
-                stateEvent = null
-            ) {
-                override suspend fun handleSuccess(resultObj: List<MemberEach>): DataState<List<MemberEach>>? {
-                    return DataState.data(
-                        response = null,
-                        data = resultObj,
-                        stateEvent = null
-                    )
-                }
+    fun updateMember(
+        stateEvent: StateEvent,
+        memberEach: MemberEach,
+        is_accepted: Int
+    ): Flow<DataState<MemberListViewState>?> =
+        flow {
+            val cacheResult = safeCacheCall(Dispatchers.IO) {
+                membersCacheDataSource.updateMember(memberEach, is_accepted)
+            }
 
-            }.getResult()
+            val response =
+                object : CacheResponseHandler<MemberListViewState, Int>(
+                    response = cacheResult,
+                    stateEvent = stateEvent
+                ) {
+                    override suspend fun handleSuccess(resultObj: Int): DataState<MemberListViewState>? {
+                        val viewState = MemberListViewState(
+                            is_accepted = resultObj
+                        )
+                        return DataState.data(
+                            response = Response(
+                                message = "updated data...",
+                                uiComponentType = UIComponentType.None(),
+                                messageType = MessageType.Success()
+                            ),
+                            data = viewState,
+                            stateEvent = stateEvent
+                        )
+                    }
 
-        return response?.data!!
-    }
+                }.getResult()
+
+            emit(response)
+        }
 
     private suspend fun getMembersFromNetwork(): Members {
         val networkResult = safeApiCall(Dispatchers.IO) {

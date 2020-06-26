@@ -21,10 +21,7 @@ constructor(
 
     override suspend fun updateMember(member: MemberEach, is_accepted: Int): Int {
         return dao.updateMember(
-            member.id.value,
-            member.name.first + " " + member.name.last,
-            member.location.city + " , " + member.location.state + " , " + member.location.country,
-            member.dob.age.toString(),
+            member.login.uuid,
             is_accepted
         )
     }
