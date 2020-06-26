@@ -21,10 +21,10 @@ constructor(
         return list
     }
 
-    fun memberListToEntityList(notes: List<MemberEach>): List<MemberCacheEntity> {
+    fun memberListToEntityList(members: List<MemberEach>): List<MemberCacheEntity> {
         val entities: ArrayList<MemberCacheEntity> = ArrayList()
-        for (note in notes) {
-            entities.add(mapToEntity(note))
+        for (member in members) {
+            entities.add(mapToEntity(member))
         }
         return entities
     }
@@ -49,7 +49,7 @@ constructor(
             name = Name(entity.name, "", ""),
             nat = entity.nat,
             phone = entity.phone,
-            picture = Picture("", entity.picture, ""),
+            picture = Picture(entity.picture, "", ""),
             registered = Registered(0, "")
         )
         return memberEach
@@ -57,17 +57,17 @@ constructor(
 
     override fun mapToEntity(domainModel: MemberEach): MemberCacheEntity {
         return MemberCacheEntity(
-            cell = domainModel.cell?: "",
-            dob = domainModel.dob.age.toString()?: "",
-            email = domainModel.email?: "",
-            gender = domainModel.gender?: "",
+            cell = domainModel.cell ?: "",
+            dob = domainModel.dob.age.toString() ?: "",
+            email = domainModel.email ?: "",
+            gender = domainModel.gender ?: "",
             id = domainModel.id.value ?: "",
             location = domainModel.location.city + " , " + domainModel.location.state + " , " + domainModel.location.country,
             uuid = domainModel.login.uuid,
             name = domainModel.name.first + " " + domainModel.name.last,
-            nat = domainModel.nat?: "",
-            phone = domainModel.phone?: "",
-            picture = domainModel.picture.medium?: "",
+            nat = domainModel.nat ?: "",
+            phone = domainModel.phone ?: "",
+            picture = domainModel.picture.large ?: "",
             is_accepted = 0
         )
     }

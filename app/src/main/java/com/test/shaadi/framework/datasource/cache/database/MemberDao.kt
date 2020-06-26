@@ -35,5 +35,5 @@ interface MemberDao {
     ): Int
 
     @Query("SELECT * FROM members")
-    suspend fun getAllNotes(): List<MemberCacheEntity>
+    suspend fun getAllMembers(): List<MemberCacheEntity>
 }

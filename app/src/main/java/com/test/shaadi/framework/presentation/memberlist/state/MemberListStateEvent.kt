@@ -32,6 +32,6 @@ sealed class MemberListStateEvent : StateEvent {
             return "Loaded all cached members"
         }
 
-        override fun shouldDisplayProgressBar() = false
+        override fun shouldDisplayProgressBar() = true
     }
 }

@@ -21,14 +21,12 @@ class CardStackAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val spot = spots[position]
-        holder.name.text = "${spot.name}. ${spot.dob}"
+        holder.name.text = "${spot.name.first}. ${spot.dob.age}"
         holder.city.text = spot.location.city
         Glide.with(holder.image)
-            .load(spot.picture.medium)
+            .load(spot.picture.large)
+            .placeholder(R.color.white)
             .into(holder.image)
-        /*holder.itemView.setOnClickListener { v ->
-            Toast.makeText(v.context, spot.name, Toast.LENGTH_SHORT).show()
-        }*/
     }
 
     override fun getItemCount(): Int {

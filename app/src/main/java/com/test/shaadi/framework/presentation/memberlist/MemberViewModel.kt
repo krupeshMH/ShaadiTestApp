@@ -35,12 +35,11 @@ constructor(
         data.let { viewState ->
             viewState.memberList.let { memberList ->
                 setMemberListData(memberList)
-                println(memberList)
             }
 
             viewState.is_accepted?.let { isAccepted ->
                 println(isAccepted)
-                //setMemberListData(memberList)
+                isAcceptedDataUpdated(isAccepted)
             }
 
         }
@@ -49,6 +48,12 @@ constructor(
     private fun setMemberListData(memberList: List<MemberEach>?) {
         val update = getCurrentViewStateOrNew()
         update.memberList = memberList
+        setViewState(update)
+    }
+
+    private fun isAcceptedDataUpdated(isAccepted: Int) {
+        val update = getCurrentViewStateOrNew()
+        update.is_accepted = isAccepted
         setViewState(update)
     }
 

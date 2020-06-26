@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.test.shaadi.R
 import com.test.shaadi.business.domain.model.MemberEach
 import com.test.shaadi.framework.presentation.common.BaseFragment
@@ -30,8 +31,7 @@ constructor(
 
     private val cardStackView by lazy { activity?.findViewById<CardStackView>(R.id.card_stack_view) }
     private val manager by lazy { CardStackLayoutManager(activity, this) }
-    //private val adapter by lazy { CardStackAdapter(createSpots()) }
-
+    lateinit var adapter: CardStackAdapter
     private val viewModel: MemberViewModel by viewModels {
         viewModelFactory
     }
@@ -39,7 +39,6 @@ constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setupChannel()
-        setupButton()
     }
 
     override fun inject() {
@@ -48,20 +47,17 @@ constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupButton()
         setupSwipeRefresh()
         subscribeObservers()
     }
 
     private fun setupSwipeRefresh() {
         swipe_refresh.setOnRefreshListener {
-            reloadMembers()
             swipe_refresh.isRefreshing = false
         }
     }
 
-    private fun reloadMembers() {
-        TODO("Not yet implemented")
-    }
 
     private fun subscribeObservers() {
         swipe_refresh.isRefreshing = true
@@ -87,6 +83,10 @@ constructor(
                 }
             }
         })
+
+        viewModel.shouldDisplayProgressBar.observe(viewLifecycleOwner, Observer {
+            uiController.displayProgressBar(it)
+        })
     }
 
     private fun loadCachedMembers() {
@@ -95,20 +95,30 @@ constructor(
         )
     }
 
+    private fun updateMembers(memberEach: MemberEach, is_accepted: Int) {
+        viewModel.setStateEvent(
+            MemberListStateEvent.AcceptDeclineEvent(is_accepted, memberEach)
+        )
+    }
+
+
     private fun setupCardStackView(memberList: List<MemberEach>) {
         initialize(memberList)
     }
 
     private fun setupButton() {
-        val skip = activity?.findViewById<View>(R.id.skip_button)
-        skip?.setOnClickListener {
-            val setting = SwipeAnimationSetting.Builder()
-                .setDirection(Direction.Left)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
-                .build()
-            manager.setSwipeAnimationSetting(setting)
-            cardStackView?.swipe()
+        skip_button.setOnClickListener {
+            if (manager.topPosition >= 0 && adapter.getSpots().isNotEmpty()) {
+                val memberEach = adapter.getSpots().get(manager.topPosition)
+                updateMembers(memberEach, -1)
+                val setting = SwipeAnimationSetting.Builder()
+                    .setDirection(Direction.Left)
+                    .setDuration(Duration.Normal.duration)
+                    .setInterpolator(AccelerateInterpolator())
+                    .build()
+                manager.setSwipeAnimationSetting(setting)
+                cardStackView?.swipe()
+            }
         }
 
         //val rewind = activity?.findViewById<View>(com.yuyakaido.android.cardstackview.R.id.rewind_button)
@@ -122,8 +132,9 @@ constructor(
             cardStackView?.rewind()
         }*/
 
-        val like = activity?.findViewById<View>(R.id.like_button)
-        like?.setOnClickListener {
+        like_button?.setOnClickListener {
+            val memberEach = adapter.getSpots().get(manager.topPosition)
+            updateMembers(memberEach, 1)
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Right)
                 .setDuration(Duration.Normal.duration)
@@ -147,7 +158,8 @@ constructor(
         manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager.setOverlayInterpolator(LinearInterpolator())
         cardStackView?.layoutManager = manager
-        cardStackView?.adapter = CardStackAdapter(memberList)
+        adapter = CardStackAdapter(memberList)
+        cardStackView?.adapter = adapter
         cardStackView?.itemAnimator.apply {
             if (this is DefaultItemAnimator) {
                 supportsChangeAnimations = false

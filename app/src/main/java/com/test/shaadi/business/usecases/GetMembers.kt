@@ -26,8 +26,8 @@ constructor(
 ) {
 
     suspend fun syncData() {
-        val networkNotesObject = getMembersFromNetwork()
-        syncNetworkDataWithCache(networkNotesObject)
+        val networkMembersObject = getMembersFromNetwork()
+        syncNetworkDataWithCache(networkMembersObject)
     }
 
     fun getCachedMembers(stateEvent: StateEvent): Flow<DataState<MemberListViewState>?> =
@@ -82,8 +82,8 @@ constructor(
                         )
                         return DataState.data(
                             response = Response(
-                                message = "updated data...",
-                                uiComponentType = UIComponentType.None(),
+                                message = "Data updated",
+                                uiComponentType = UIComponentType.Toast(),
                                 messageType = MessageType.Success()
                             ),
                             data = viewState,
@@ -107,7 +107,11 @@ constructor(
         ) {
             override suspend fun handleSuccess(resultObj: Members): DataState<Members>? {
                 return DataState.data(
-                    response = null,
+                    response = Response(
+                        message = "Data loaded",
+                        uiComponentType = UIComponentType.Toast(),
+                        messageType = MessageType.Success()
+                    ),
                     data = resultObj,
                     stateEvent = null
                 )
@@ -123,11 +127,6 @@ constructor(
 
         for (eachMember in members.results) {
             membersCacheDataSource.insertMember(eachMember)
-        }
-
-        val list = membersCacheDataSource.getAllMembers()
-        for (eachEntity in list) {
-            println(eachEntity.name)
         }
     }
 }
