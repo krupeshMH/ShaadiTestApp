@@ -2,6 +2,7 @@ package com.test.shaadi.di
 
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
+import com.test.shaadi.business.usecases.MemberListInteractors
 import com.test.shaadi.framework.presentation.common.MemberViewModelFactory
 import com.test.shaadi.framework.presentation.memberlist.MemberSyncManager
 import dagger.Module
@@ -19,10 +20,12 @@ object MembersViewModelModule {
     @JvmStatic
     @Provides
     fun provideMemberViewModelFactory(
-        memberSyncManager: MemberSyncManager
+        memberSyncManager: MemberSyncManager,
+        interactors: MemberListInteractors
     ): ViewModelProvider.Factory {
         return MemberViewModelFactory(
-            memberSyncManager = memberSyncManager
+            memberSyncManager = memberSyncManager,
+            interactors = interactors
         )
     }
 

@@ -22,7 +22,7 @@ sealed class MemberListStateEvent : StateEvent {
         override fun shouldDisplayProgressBar() = false
     }
 
-    class GetMembersEvent() : MemberListStateEvent() {
+    class GetMembersEvent : MemberListStateEvent() {
 
         override fun errorInfo(): String {
             return "Error loading."

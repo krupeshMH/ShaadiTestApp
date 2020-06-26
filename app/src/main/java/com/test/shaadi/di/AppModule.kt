@@ -10,6 +10,7 @@ import com.test.shaadi.business.data.cache.implementation.MembersCacheDataSource
 import com.test.shaadi.business.data.network.abstraction.MembersNetworkDataSource
 import com.test.shaadi.business.data.network.implementation.MembersNetworkDataSourceImpl
 import com.test.shaadi.business.usecases.GetMembers
+import com.test.shaadi.business.usecases.MemberListInteractors
 import com.test.shaadi.framework.datasource.cache.abstraction.MembersDaoService
 import com.test.shaadi.framework.datasource.cache.database.MemberDao
 import com.test.shaadi.framework.datasource.cache.database.MemberDatabase
@@ -178,6 +179,13 @@ object AppModule {
         return MemberSyncManager(
             getMembers
         )
+    }
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideMemberListInteractors(getMembers: GetMembers): MemberListInteractors {
+        return MemberListInteractors(getMembers)
     }
 
     /*@Provides

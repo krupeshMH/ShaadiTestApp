@@ -1,6 +1,7 @@
 package com.test.shaadi.framework.presentation.memberlist
 
 import androidx.lifecycle.viewModelScope
+import com.test.shaadi.business.domain.model.MemberEach
 import com.test.shaadi.business.domain.state.DataState
 import com.test.shaadi.business.domain.state.StateEvent
 import com.test.shaadi.business.usecases.MemberListInteractors
@@ -33,16 +34,22 @@ constructor(
     override fun handleNewData(data: MemberListViewState) {
         data.let { viewState ->
             viewState.memberList.let { memberList ->
-                //setMemberListData(memberList)
+                setMemberListData(memberList)
                 println(memberList)
             }
 
             viewState.is_accepted?.let { isAccepted ->
                 println(isAccepted)
-
+                //setMemberListData(memberList)
             }
 
         }
+    }
+
+    private fun setMemberListData(memberList: List<MemberEach>?) {
+        val update = getCurrentViewStateOrNew()
+        update.memberList = memberList
+        setViewState(update)
     }
 
     override fun setStateEvent(stateEvent: StateEvent) {
