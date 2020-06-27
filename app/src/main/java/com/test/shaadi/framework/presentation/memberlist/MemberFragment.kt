@@ -17,6 +17,7 @@ import com.test.shaadi.framework.presentation.common.gone
 import com.test.shaadi.framework.presentation.common.visible
 import com.test.shaadi.framework.presentation.memberlist.state.MemberListStateEvent
 import com.yuyakaido.android.cardstackview.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -51,25 +52,17 @@ constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progress_bar.visible() // ideally should be state event based but added here temp
         setupButton()
-        setupSwipeRefresh()
         subscribeObservers()
     }
 
-    private fun setupSwipeRefresh() {
-        swipe_refresh.setOnRefreshListener {
-            swipe_refresh.isRefreshing = false
-        }
-    }
-
-
     private fun subscribeObservers() {
-        swipe_refresh.isRefreshing = true
         viewModel.hasSyncBeenExecuted()
             .observe(viewLifecycleOwner, Observer { hasSyncBeenExecuted ->
-                swipe_refresh.isRefreshing = false
                 if (hasSyncBeenExecuted) {
                     // load from cache and update ui
+                    progress_bar.gone()
                     loadCachedMembers()
                 }
             })
