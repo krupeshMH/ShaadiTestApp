@@ -27,7 +27,7 @@ constructor(
 
     suspend fun syncData() {
         val networkMembersObject = getMembersFromNetwork()
-        syncNetworkDataWithCache(networkMembersObject)
+        networkMembersObject?.let { syncNetworkDataWithCache(it) }
     }
 
     fun getCachedMembers(stateEvent: StateEvent): Flow<DataState<MemberListViewState>?> =
@@ -42,18 +42,31 @@ constructor(
                     stateEvent = stateEvent
                 ) {
                     override suspend fun handleSuccess(resultObj: List<MemberEach>): DataState<MemberListViewState>? {
-                        val viewState = MemberListViewState(
-                            memberList = resultObj
-                        )
-                        return DataState.data(
-                            response = Response(
-                                message = "Retrieved from local cache...",
-                                uiComponentType = UIComponentType.Toast(),
-                                messageType = MessageType.Success()
-                            ),
-                            data = viewState,
-                            stateEvent = stateEvent
-                        )
+                        return if(resultObj.isNotEmpty()){
+                            val viewState = MemberListViewState(
+                                memberList = resultObj
+                            )
+                            return DataState.data(
+                                response = Response(
+                                    message = "Retrieved from local cache...",
+                                    uiComponentType = UIComponentType.Toast(),
+                                    messageType = MessageType.Success()
+                                ),
+                                data = viewState,
+                                stateEvent = stateEvent
+                            )
+                        }
+                        else{
+                            DataState.data(
+                                response = Response(
+                                    message = "Some error has occurred. Try again later!",
+                                    uiComponentType = UIComponentType.Toast(),
+                                    messageType = MessageType.Error()
+                                ),
+                                data = null,
+                                stateEvent = stateEvent
+                            )
+                        }
                     }
 
                 }.getResult()
@@ -96,7 +109,7 @@ constructor(
             emit(response)
         }
 
-    private suspend fun getMembersFromNetwork(): Members {
+    private suspend fun getMembersFromNetwork(): Members? {
         val networkResult = safeApiCall(Dispatchers.IO) {
             membersNetworkDataSource.getAllMembers()
         }
@@ -117,8 +130,10 @@ constructor(
                 )
             }
         }.getResult()
-
-        return response?.data!!
+        return if (response != null)
+            response.data
+        else
+            null
     }
 
     private suspend fun syncNetworkDataWithCache(

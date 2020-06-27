@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -77,8 +78,16 @@ constructor(
             if (viewState != null) {
                 viewState.memberList.let {
                     it?.let { list ->
-                        button_container.visible()
-                        setupCardStackView(list)
+                        if (list.isNotEmpty()) {
+                            button_container.visible()
+                            setupCardStackView(list)
+                        } else {
+                            Toast.makeText(
+                                activity,
+                                "Error occurred while fetching data...",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
 
