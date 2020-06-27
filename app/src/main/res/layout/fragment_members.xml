@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
@@ -17,6 +18,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:text="Please select from below cards"
+                android:textSize="18sp" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -24,9 +35,9 @@
                 <RelativeLayout
                     android:id="@+id/button_container"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="120dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="80dp"
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatButton
@@ -35,10 +46,13 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/rewind_button"
-                        android:background="@android:color/holo_red_light"
+                        android:background="@drawable/button_decline"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
                         android:text="@string/decline"
-                        app:backgroundTint="@android:color/white"
-                        app:rippleColor="#22ED7563" />
+                        android:textColor="#ffffff" />
+                    app:rippleColor="#22ED7563" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/rewind_button"
@@ -51,8 +65,6 @@
                         android:layout_marginRight="32dp"
                         android:src="@drawable/rewind_blue_24dp"
                         android:visibility="invisible"
-                        app:backgroundTint="@android:color/white"
-                        app:fabSize="mini"
                         app:rippleColor="#225BC9FA" />
 
                     <androidx.appcompat.widget.AppCompatButton
@@ -61,14 +73,17 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/rewind_button"
-                        android:background="@android:color/holo_green_dark"
+                        android:background="@drawable/button_accepted"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
                         android:text="@string/accept"
-                        app:backgroundTint="@android:color/white"
-                        app:rippleColor="#226FE2B3" />
+                        android:textColor="#ffffff" />
 
                 </RelativeLayout>
 
                 <com.yuyakaido.android.cardstackview.CardStackView
+                    android:layout_marginTop="10dp"
                     android:id="@+id/card_stack_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

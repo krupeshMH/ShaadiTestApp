@@ -12,6 +12,8 @@ import com.test.shaadi.R
 import com.test.shaadi.business.domain.model.MemberEach
 import com.test.shaadi.business.domain.state.StateMessageCallback
 import com.test.shaadi.framework.presentation.common.BaseFragment
+import com.test.shaadi.framework.presentation.common.gone
+import com.test.shaadi.framework.presentation.common.visible
 import com.test.shaadi.framework.presentation.memberlist.state.MemberListStateEvent
 import com.yuyakaido.android.cardstackview.*
 import kotlinx.android.synthetic.main.fragment_members.*
@@ -75,6 +77,7 @@ constructor(
             if (viewState != null) {
                 viewState.memberList.let {
                     it?.let { list ->
+                        button_container.visible()
                         setupCardStackView(list)
                     }
                 }
@@ -122,6 +125,7 @@ constructor(
     }
 
     private fun setupButton() {
+        button_container.gone()
         skip_button.setOnClickListener {
             disLike()
         }
