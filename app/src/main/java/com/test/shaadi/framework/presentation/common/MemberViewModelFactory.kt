@@ -1,6 +1,5 @@
 package com.test.shaadi.framework.presentation.common
 
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.test.shaadi.business.usecases.MemberListInteractors

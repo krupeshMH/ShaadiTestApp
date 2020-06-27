@@ -36,7 +36,7 @@
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/rewind_button"
                         android:background="@android:color/holo_red_light"
-                        android:text=" Decline "
+                        android:text="@string/decline"
                         app:backgroundTint="@android:color/white"
                         app:rippleColor="#22ED7563" />
 
@@ -62,7 +62,7 @@
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/rewind_button"
                         android:background="@android:color/holo_green_dark"
-                        android:text=" ACCEPT "
+                        android:text="@string/accept"
                         app:backgroundTint="@android:color/white"
                         app:rippleColor="#226FE2B3" />
 

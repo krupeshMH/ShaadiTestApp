@@ -8,10 +8,14 @@ import com.test.shaadi.business.usecases.MemberListInteractors
 import com.test.shaadi.framework.presentation.common.BaseViewModel
 import com.test.shaadi.framework.presentation.memberlist.state.MemberListStateEvent
 import com.test.shaadi.framework.presentation.memberlist.state.MemberListViewState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 @Singleton
 class MemberViewModel
 @Inject
@@ -38,7 +42,7 @@ constructor(
             }
 
             viewState.is_accepted?.let { isAccepted ->
-                println(isAccepted)
+                //println(isAccepted)
                 isAcceptedDataUpdated(isAccepted)
             }
 

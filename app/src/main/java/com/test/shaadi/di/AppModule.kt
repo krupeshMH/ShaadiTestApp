@@ -1,7 +1,5 @@
 package com.test.shaadi.di
 
-import android.app.Application
-import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -26,7 +24,6 @@ import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -46,14 +43,6 @@ object AppModule {
             .create()
     }
 
-    /*@Provides
-    @Singleton
-    fun provideHttpCache(application: Application): Cache {
-        val cacheSize = 10 * 1024 * 1024
-        return Cache(application.cacheDir, cacheSize.toLong())
-    }*/
-
-
     @Singleton
     @Provides
     fun provideRetrofitInstance(gson: Gson): Retrofit {
@@ -69,22 +58,18 @@ object AppModule {
                 val request = original.newBuilder()
                     .addHeader("Content-Type", "application/json; charset=utf-8")
                     .removeHeader("Pragma")
-                    //.header("Cache-Control", String.format("max-age=%s", BuildConfig.CACHETIME))
                     .build()
 
                 val response = chain.proceed(request)
-                //response.cacheResponse()
                 // Customize or return the response
                 response
             }
-            //.cache(cache)
             .build()
 
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            //.addCallAdapterFactory(provideRxJavaCallAdapterFactory())
             .build()
 
     }
@@ -92,7 +77,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideMainApi(retrofit: Retrofit): GetMembersAPI {
-        return retrofit.create<GetMembersAPI>(GetMembersAPI::class.java!!)
+        return retrofit.create<GetMembersAPI>(GetMembersAPI::class.java)
     }
 
     @JvmStatic
@@ -187,35 +172,4 @@ object AppModule {
     fun provideMemberListInteractors(getMembers: GetMembers): MemberListInteractors {
         return MemberListInteractors(getMembers)
     }
-
-    /*@Provides
-    @Singleton
-    fun provideGSonConverterFactory(gson: Gson): Converter.Factory {
-        return GsonConverterFactory.create(gson)
-    }*/
-
-    /*@Provides
-    @Singleton
-    fun provideRxJavaCallAdapterFactory(): CallAdapter.Factory {
-        return RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
-    }*/
-
-
-    /* @Singleton
-     @Provides
-     internal fun provideRequestOptions(): RequestOptions {
-         return RequestOptions
-             .placeholderOf(R.drawable.ic_baseline_person_24)
-             .error(R.drawable.ic_baseline_person_24)
-     }
-
-     @Singleton
-     @Provides
-     internal fun provideGlideInstance(
-         application: Application,
-         requestOptions: RequestOptions
-     ): RequestManager {
-         return Glide.with(application)
-             .setDefaultRequestOptions(requestOptions)
-     }*/
 }

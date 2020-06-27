@@ -1,5 +1,6 @@
 package com.test.shaadi.framework.presentation.memberlist
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class CardStackAdapter(
         return ViewHolder(inflater.inflate(R.layout.item_spot, parent, false))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val spot = spots[position]
         holder.name.text = "${spot.name.first}. ${spot.dob.age}"
@@ -33,9 +35,9 @@ class CardStackAdapter(
         return spots.size
     }
 
-    fun setSpots(spots: List<MemberEach>) {
+    /*fun setSpots(spots: List<MemberEach>) {
         this.spots = spots
-    }
+    }*/
 
     fun getSpots(): List<MemberEach> {
         return spots

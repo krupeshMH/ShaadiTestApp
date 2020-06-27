@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.test.shaadi.R
 import com.test.shaadi.business.domain.model.MemberEach
 import com.test.shaadi.business.domain.state.StateMessageCallback
@@ -18,6 +17,7 @@ import com.yuyakaido.android.cardstackview.*
 import kotlinx.android.synthetic.main.fragment_members.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,7 +32,7 @@ constructor(
 
     private val cardStackView by lazy { activity?.findViewById<CardStackView>(R.id.card_stack_view) }
     private val manager by lazy { CardStackLayoutManager(activity, this) }
-    lateinit var adapter: CardStackAdapter
+    private lateinit var adapter: CardStackAdapter
     private val viewModel: MemberViewModel by viewModels {
         viewModelFactory
     }
@@ -115,6 +115,7 @@ constructor(
         )
     }
 
+    // card related functionality below
 
     private fun setupCardStackView(memberList: List<MemberEach>) {
         initialize(memberList)
@@ -175,30 +176,39 @@ constructor(
     }
 
     private fun like() {
-        if (manager.topPosition >= 0 && adapter.getSpots().isNotEmpty()) {
-            val memberEach = adapter.getSpots().get(manager.topPosition)
-            updateMembers(memberEach, 1)
-            val setting = SwipeAnimationSetting.Builder()
-                .setDirection(Direction.Right)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
-                .build()
-            manager.setSwipeAnimationSetting(setting)
-            cardStackView?.swipe()
+        try {
+            if (manager.topPosition >= 0 && adapter.getSpots().isNotEmpty()) {
+                val memberEach = adapter.getSpots().get(manager.topPosition)
+                updateMembers(memberEach, 1)
+                val setting = SwipeAnimationSetting.Builder()
+                    .setDirection(Direction.Right)
+                    .setDuration(Duration.Normal.duration)
+                    .setInterpolator(AccelerateInterpolator())
+                    .build()
+                manager.setSwipeAnimationSetting(setting)
+                cardStackView?.swipe()
+            }
+        } catch (e: Exception) {
+
         }
+
     }
 
     private fun disLike() {
-        if (manager.topPosition >= 0 && adapter.getSpots().isNotEmpty()) {
-            val memberEach = adapter.getSpots().get(manager.topPosition)
-            updateMembers(memberEach, -1)
-            val setting = SwipeAnimationSetting.Builder()
-                .setDirection(Direction.Left)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(AccelerateInterpolator())
-                .build()
-            manager.setSwipeAnimationSetting(setting)
-            cardStackView?.swipe()
+        try {
+            if (manager.topPosition >= 0 && adapter.getSpots().isNotEmpty()) {
+                val memberEach = adapter.getSpots().get(manager.topPosition)
+                updateMembers(memberEach, -1)
+                val setting = SwipeAnimationSetting.Builder()
+                    .setDirection(Direction.Left)
+                    .setDuration(Duration.Normal.duration)
+                    .setInterpolator(AccelerateInterpolator())
+                    .build()
+                manager.setSwipeAnimationSetting(setting)
+                cardStackView?.swipe()
+            }
+        } catch (e: Exception) {
+
         }
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.test.shaadi.R
 import com.test.shaadi.business.domain.state.Response
@@ -14,10 +13,13 @@ import com.test.shaadi.framework.presentation.common.AppFragmentFactory
 import com.test.shaadi.framework.presentation.common.displayToast
 import com.test.shaadi.framework.presentation.common.gone
 import com.test.shaadi.framework.presentation.common.visible
-import com.test.shaadi.framework.presentation.memberlist.MemberFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class MainActivity : AppCompatActivity(), UIController {
     @Inject
     lateinit var fragmentFactory: AppFragmentFactory
@@ -27,13 +29,11 @@ class MainActivity : AppCompatActivity(), UIController {
         setFragmentFactory()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
     }
 
     private fun setFragmentFactory() {
         supportFragmentManager.fragmentFactory = fragmentFactory
     }
-
 
     private fun inject() {
         (application as BaseApplication).appComponent

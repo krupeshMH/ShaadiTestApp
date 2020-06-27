@@ -2,7 +2,6 @@ package com.test.shaadi.framework.presentation.memberlist.state
 
 import com.test.shaadi.business.domain.model.MemberEach
 import com.test.shaadi.business.domain.state.StateEvent
-import com.test.shaadi.framework.datasource.model.MemberCacheEntity
 
 sealed class MemberListStateEvent : StateEvent {
 

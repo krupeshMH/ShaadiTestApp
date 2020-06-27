@@ -33,7 +33,4 @@ interface MemberDao {
         primaryKey: String,
         is_accepted: Int
     ): Int
-
-    @Query("SELECT * FROM members")
-    suspend fun getAllMembers(): List<MemberCacheEntity>
 }

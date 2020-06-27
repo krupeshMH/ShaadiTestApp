@@ -48,7 +48,7 @@ constructor(
                         return DataState.data(
                             response = Response(
                                 message = "Retrieved from local cache...",
-                                uiComponentType = UIComponentType.None(),
+                                uiComponentType = UIComponentType.Toast(),
                                 messageType = MessageType.Success()
                             ),
                             data = viewState,
@@ -83,7 +83,7 @@ constructor(
                         return DataState.data(
                             response = Response(
                                 message = "Data updated",
-                                uiComponentType = UIComponentType.Toast(),
+                                uiComponentType = UIComponentType.None(),
                                 messageType = MessageType.Success()
                             ),
                             data = viewState,
@@ -109,7 +109,7 @@ constructor(
                 return DataState.data(
                     response = Response(
                         message = "Data loaded",
-                        uiComponentType = UIComponentType.Toast(),
+                        uiComponentType = UIComponentType.None(),
                         messageType = MessageType.Success()
                     ),
                     data = resultObj,
