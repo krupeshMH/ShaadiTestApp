@@ -29,4 +29,12 @@ object Dependencies {
     val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit2_version}"
     val retrofit_gson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit2_version}"
     val markdown_processor = "com.yydcdut:markdown-processor:${Versions.markdown_processor}"
+
+    val logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.logging_interceptor}"
+    val card_stack_view = "com.yuyakaido.android:card-stack-view:${Versions.card_stack_view}"
+    val roundedimageview = "com.makeramen:roundedimageview:${Versions.roundedimageview}"
+    val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+    val glide_compiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
+    val material = "com.google.android.material:material:${Versions.material}"
+
 }

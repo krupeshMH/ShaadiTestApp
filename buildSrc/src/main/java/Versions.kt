@@ -37,4 +37,9 @@ object Versions {
     val fragment_version = "1.2.0"
     val androidx_test_ext = "1.1.1"
     val crashlytics_gradle = "2.1.0"
+    val logging_interceptor = "4.0.1"
+    val card_stack_view = "2.3.4"
+    val roundedimageview = "2.3.0"
+    val glide = "4.10.0"
+    val material = "1.1.0"
 }
