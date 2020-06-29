@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import com.test.shaadi.business.domain.state.StateMessageCallback
+import com.test.shaadi.util.SafeClickListener
 
 
 fun View.visible() {
@@ -35,4 +36,11 @@ fun Activity.displayToast(
 ){
     Toast.makeText(this,message, Toast.LENGTH_SHORT).show()
     stateMessageCallback.removeMessageFromStack()
+}
+
+fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
+    val safeClickListener = SafeClickListener {
+        onSafeClick(it)
+    }
+    setOnClickListener(safeClickListener)
 }
